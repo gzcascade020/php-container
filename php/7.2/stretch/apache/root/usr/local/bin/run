@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+source ${PHP_CONTAINER_SCRIPTS_PATH}/common.sh
+
+export_vars=$(cgroup-limits); export $export_vars
+sudo_process_extending_files ${PHP_CONTAINER_SCRIPTS_PATH}/pre-start
+sudo -E post-start
+
+exec apache2-foreground

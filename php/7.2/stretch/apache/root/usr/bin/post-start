@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+source ${PHP_CONTAINER_SCRIPTS_PATH}/common.sh
+
+log_info 'Post start ...'
+
+# reset /etc/passwd /etc/shadow permissions
+chmod g-w /etc/passwd /etc/shadow
+chgrp shadow /etc/shadow
+
+exit 0
