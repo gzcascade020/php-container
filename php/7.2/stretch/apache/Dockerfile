@@ -54,7 +54,8 @@ ENV HOME=${APP_ROOT}/src \
     PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php \
     APP_DATA=${APP_ROOT}/src \
     HTTPD_DOCUMENT_ROOT=/ \
-    HTTPD_CONF_LINENO=172
+    HTTPD_CONF_LINENO=172 \
+    HTTPD_MPM_PREFORK_AUTOMATICALLY_SET=1
 
 # Reset permissions of modified directories
 RUN chown -R ${USER_UID}:0 ${APP_ROOT} && \
@@ -64,10 +65,9 @@ RUN chown -R ${USER_UID}:0 ${APP_ROOT} && \
     chgrp 0 /etc/shadow && \
     chmod g=u /etc/passwd /etc/shadow && \
 # Copy php production config
-    rm -f ${PHP_INI_DIR}/conf.d/10-opcache.ini && \
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
 # Update apache config
-    rm -f /etc/apache2/mods-available/mpm_prefork.conf && \
+    a2enmod ssl  && \
     sed -ri -e 's!/var/www/html!/opt/app-root/src${HTTPD_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
     sed -ri -e 's!/var/www/!/opt/app-root/src${HTTPD_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf && \
     # Update apache ports

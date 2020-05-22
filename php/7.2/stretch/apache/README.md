@@ -40,14 +40,22 @@ The following environment variables set their equivalent property value in the o
   * If enabled, a fast shutdown sequence is used for the accelerated code, Depending on the used Memory Manager this may cause some incompatibilities.
   * Default: 2  
 
+
+You can override the Apache settings of the PHP application. You can override this at any time by 
+specifying the values yourself:
+* **HTTPD_DOCUMENT_ROOT**
+  * Path that defines the DocumentRoot for your application (ie. /public)
+  * Default: /
+
+
 You can override the Apache [MPM prefork](https://httpd.apache.org/docs/2.4/mod/mpm_common.html)
 settings to increase the performance for of the PHP application. In case you set
 some Cgroup limits, the image will attempt to automatically set the
 optimal values. You can override this at any time by specifying the values
 yourself:
-* **HTTPD_DOCUMENT_ROOT**
-  * Path that defines the DocumentRoot for your application (ie. /public)
-  * Default: /
+* **HTTPD_MPM_PREFORK_AUTOMATICALLY_SET**
+  * Automatically sets the [MPM prefork](https://httpd.apache.org/docs/2.4/mod/mpm_common.html) optimal values on startup.
+  * Default: 1
 * **HTTPD_START_SERVERS**
   * The [StartServers](https://httpd.apache.org/docs/2.4/mod/mpm_common.html#startservers)
     directive sets the number of child server processes created on startup.

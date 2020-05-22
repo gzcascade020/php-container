@@ -2,9 +2,9 @@
 
 source ${PHP_CONTAINER_SCRIPTS_PATH}/common.sh
 
-log_info 'Processing additional httpd configuration ...'
+if [ ${HTTPD_MPM_PREFORK_AUTOMATICALLY_SET} -ne 0 ]; then
+  log_info 'Processing additional httpd configuration ...'
 
-if [ ! -f /etc/apache2/mods-available/mpm_prefork.conf ]; then
   export HTTPD_START_SERVERS=${HTTPD_START_SERVERS:-8}
   export HTTPD_MAX_SPARE_SERVERS=$((HTTPD_START_SERVERS+10))
 

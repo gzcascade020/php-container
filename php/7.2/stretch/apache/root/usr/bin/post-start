@@ -10,4 +10,7 @@ log_info 'Post start ...'
 chmod g-w /etc/passwd /etc/shadow
 chgrp shadow /etc/shadow
 
+# remove x permissions
+chmod -R a-x ${PHP_CONTAINER_SCRIPTS_PATH}/pre-start/
+
 exit 0
