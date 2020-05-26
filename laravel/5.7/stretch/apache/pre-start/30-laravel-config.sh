@@ -65,6 +65,14 @@ function artisan_config_cache {
     fi    
 }
 
+function artisan_optimize {
+    if [ "${LARAVEL_CONFIG_CACHE}" -ne 0 ] && [ ! -z "${LARAVEL_OPTIMIZE}" ]
+    then
+        log_and_run php artisan optimize
+    fi
+}
+    
+
 process_laravel_env_files
 process_laravel_docker_secrets
 artisan_config_cache

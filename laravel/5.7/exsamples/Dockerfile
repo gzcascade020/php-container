@@ -43,6 +43,9 @@ USER root
 
 # Copy source code
 COPY . /app
+
+WORKDIR /app
+
 # Copy files from vendor stage
 COPY --from=vendor /app/vendor/ /app/vendor/
 # Copy files from assets stage
@@ -50,6 +53,8 @@ COPY --from=assets /app/public/js/ /app/public/js/
 COPY --from=assets /app/public/css/ /app/public/css/
 COPY --from=assets /app/mix-manifest.json /app/mix-manifest.json
 RUN chmod -R g+rwX /app/storage /app/bootstrap/cache
+RUN php artisan route:cache && \
+    php artisan view:cache
 
 #######################################################################################################################
 #
