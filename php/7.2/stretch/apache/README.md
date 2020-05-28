@@ -18,6 +18,9 @@ Environment variables
 ---------------------
 
 The following environment variables set their equivalent property value in the opcache.ini file:
+* **OPCACHE_AUTOMATICALLY_SET**
+  * Automatically sets the opcache optimal values on startup.
+  * Default: 1
 * **OPCACHE_ENABLE**
   * Determines if Zend OPCache is enabled.
   * Default: 1

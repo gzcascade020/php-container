@@ -1,7 +1,3 @@
-#!/bin/bash
-
-source ${PHP_CONTAINER_SCRIPTS_PATH}/common.sh
-
 if [ ${HTTPD_MPM_PREFORK_AUTOMATICALLY_SET} -ne 0 ]; then
   log_info 'Processing additional httpd configuration ...'
 

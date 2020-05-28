@@ -1,10 +1,6 @@
-#!/bin/bash
-
-source ${PHP_CONTAINER_SCRIPTS_PATH}/common.sh
-
 log_info 'Processing additional php opcache configuration ...'
 
-if [ ! -f ${PHP_INI_DIR}/conf.d/10-opcache.ini ]; then
+if [ "${OPCACHE_AUTOMATICALLY_SET}" -ne 0 ]; then
   export OPCACHE_ENABLE=${OPCACHE_ENABLE:-1}
   export OPCACHE_INTERNED_STRINGS_BUFFER=${OPCACHE_INTERNED_STRINGS_BUFFER:-8}
   export OPCACHE_MAX_ACCELERATED_FILES=${OPCACHE_MAX_ACCELERATED_FILES:-4000}
@@ -23,5 +19,5 @@ if [ ! -f ${PHP_INI_DIR}/conf.d/10-opcache.ini ]; then
     echo "-> Cgroups memory limit is set, using OPCACHE_MEMORY_CONSUMPTION=${OPCACHE_MEMORY_CONSUMPTION}"
   fi
 
-  envsubst < /opt/app-root/etc/php.d/docker-php-ext-opcache.ini.template > ${PHP_INI_DIR}/conf.d/10-opcache.ini
+  envsubst < /opt/app-root/etc/php.d/docker-php-ext-opcache.ini.template > ${OPCACHE_INI}
 fi

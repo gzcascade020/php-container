@@ -35,7 +35,6 @@ LABEL summary="${SUMMARY}" \
 # Install utils
 RUN apt-get update && \
     apt-get -y install \
-    sudo \
     gettext-base && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -46,26 +45,24 @@ RUN docker-php-ext-install opcache
 # Add scripts
 COPY ./root /
 
-ENV APP_ROOT=/opt/app-root \
-    USER_NAME=default \
-    USER_UID=1001
+ENV APP_ROOT=/opt/app-root
 # The $HOME is not set by default, but some applications needs this variable
 ENV HOME=${APP_ROOT}/src \
     PHP_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/php \
     APP_DATA=${APP_ROOT}/src \
     HTTPD_DOCUMENT_ROOT=/ \
     HTTPD_CONF_LINENO=172 \
-    HTTPD_MPM_PREFORK_AUTOMATICALLY_SET=1
+    HTTPD_MPM_PREFORK_AUTOMATICALLY_SET=1 \
+    OPCACHE_AUTOMATICALLY_SET=1 \
+    OPCACHE_INI=${PHP_INI_DIR}/conf.d/10-opcache.ini
 
 # Reset permissions of modified directories
-RUN chown -R ${USER_UID}:0 ${APP_ROOT} && \
-    chgrp -R 0 /var/run/apache2 /var/lock/apache2 /var/log/apache2 && \
+RUN chgrp -R 0 /var/run/apache2 /var/lock/apache2 /var/log/apache2 && \
     chmod -R g+rwX /var/run/apache2 /var/lock/apache2 /var/log/apache2 && \
-# This permissions will be reset in application runtime
-    chgrp 0 /etc/shadow && \
-    chmod g=u /etc/passwd /etc/shadow && \
 # Copy php production config
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
+    touch ${OPCACHE_INI} && \
+    chmod a+rw ${OPCACHE_INI} && \
 # Update apache config
     a2enmod ssl  && \
     sed -ri -e 's!/var/www/html!/opt/app-root/src${HTTPD_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
@@ -75,12 +72,12 @@ RUN chown -R ${USER_UID}:0 ${APP_ROOT} && \
     sed -i -e 's!Listen 443!Listen 0.0.0.0:8443!g' /etc/apache2/ports.conf && \
     sed -i -e 's!<VirtualHost \*:80>!<VirtualHost \*:8080>!g' /etc/apache2/sites-available/000-default.conf && \
     sed -i -e 's!_default_:443!_default_:8443!g' /etc/apache2/sites-available/default-ssl.conf && \
-    sed -i -e "${HTTPD_CONF_LINENO}s%AllowOverride None%AllowOverride All%" /etc/apache2/apache2.conf
+    sed -i -e "${HTTPD_CONF_LINENO}s%AllowOverride None%AllowOverride All%" /etc/apache2/apache2.conf && \
+    chmod a+rw /etc/apache2/mods-available/mpm_prefork.conf
     
 # Directory with the sources is set as the working directory so
 # can execute relative to this path.
 USER 1001
 WORKDIR ${HOME}
 
-ENTRYPOINT [ "uid_entrypoint" ]
 CMD [ "run" ]

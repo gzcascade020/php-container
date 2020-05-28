@@ -1,3 +1,0 @@
-Defaults:default       secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/share/container-scripts/php/pre-start"
-
-default ALL=(root) NOPASSWD:SETENV:/usr/share/container-scripts/php/pre-start/*, /usr/bin/post-start
