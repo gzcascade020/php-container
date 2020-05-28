@@ -21,6 +21,9 @@ The following environment variables set their equivalent property value in the .
 * **LARAVEL_SECRETS**
   * Set this to a empty value to skip sets the .env values with the [docker secret](https://docs.docker.com/engine/swarm/secrets/#how-docker-manages-secrets) on startup.
   * Default: 1
+* **LARAVEL_OPTIMIZE**
+  * Set this to a empty value to skip processing ```php artisan optimize```.
+  * Default: 1
 * **LARAVEL_SECRET_{{LARAVEL_ENV_KEY}}**
   * Set this variable to use the docker secret file content to automatically update the *LARAVEL_ENV_KEY* in *LARAVEL_ENV_FILES* on startup.
   * Default: 1  

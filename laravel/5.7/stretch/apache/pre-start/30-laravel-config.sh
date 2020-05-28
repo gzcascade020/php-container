@@ -1,7 +1,3 @@
-#!/bin/bash
-
-source ${PHP_CONTAINER_SCRIPTS_PATH}/common.sh
-
 log_info 'Processing laravel configuration ...'
 
 LARAVEL_CONFIG_CACHE=${LARAVEL_CONFIG_CACHE:-1}
@@ -22,7 +18,7 @@ function process_laravel_env_files {
             filename="${example_file%.example}"
             if [ -f "${APP_DATA}/${example_file}" ] && [ ! -f "${APP_DATA}/${filename}" ]
             then
-                log_and_run cp -p "${APP_DATA}/${example_file}" "${APP_DATA}/${filename}"
+                log_and_run cp "${APP_DATA}/${example_file}" "${APP_DATA}/${filename}"
             fi
         done
     fi
