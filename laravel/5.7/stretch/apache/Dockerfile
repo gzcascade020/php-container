@@ -41,5 +41,4 @@ COPY ./pre-start ${PHP_CONTAINER_SCRIPTS_PATH}/pre-start/
 USER 1001
 WORKDIR ${HOME}
 
-ENTRYPOINT [ "uid_entrypoint" ]
 CMD [ "run" ]
