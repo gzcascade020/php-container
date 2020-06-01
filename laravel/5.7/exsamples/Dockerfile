@@ -79,5 +79,3 @@ COPY --from=source /app ${APP_DATA}
 
 USER 1001
 WORKDIR ${HOME}
-
-CMD [ "run" ]

@@ -52,8 +52,7 @@ ENV HOME=${APP_ROOT}/src \
     APP_DATA=${APP_ROOT}/src \
     HTTPD_DOCUMENT_ROOT=/ \
     HTTPD_CONF_LINENO=172 \
-    HTTPD_MPM_PREFORK_AUTOMATICALLY_SET=1 \
-    OPCACHE_AUTOMATICALLY_SET=1 \
+    HTTPD_MPM_PREFORK_CONF=/etc/apache2/mods-available/mpm_prefork.conf \
     OPCACHE_INI=${PHP_INI_DIR}/conf.d/10-opcache.ini
 
 # Reset permissions of modified directories
@@ -64,20 +63,13 @@ RUN chgrp -R 0 /var/run/apache2 /var/lock/apache2 /var/log/apache2 && \
     touch ${OPCACHE_INI} && \
     chmod a+rw ${OPCACHE_INI} && \
 # Update apache config
-    a2enmod ssl  && \
-    sed -ri -e 's!/var/www/html!/opt/app-root/src${HTTPD_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
-    sed -ri -e 's!/var/www/!/opt/app-root/src${HTTPD_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf && \
     # Update apache ports
-    sed -i -e 's!Listen 80!Listen 0.0.0.0:8080!g' /etc/apache2/ports.conf && \
-    sed -i -e 's!Listen 443!Listen 0.0.0.0:8443!g' /etc/apache2/ports.conf && \
-    sed -i -e 's!<VirtualHost \*:80>!<VirtualHost \*:8080>!g' /etc/apache2/sites-available/000-default.conf && \
-    sed -i -e 's!_default_:443!_default_:8443!g' /etc/apache2/sites-available/default-ssl.conf && \
-    sed -i -e "${HTTPD_CONF_LINENO}s%AllowOverride None%AllowOverride All%" /etc/apache2/apache2.conf && \
-    chmod a+rw /etc/apache2/mods-available/mpm_prefork.conf
+    a2enmod ssl  && \
+    rm -f ${HTTPD_MPM_PREFORK_CONF} && \
+    touch ${HTTPD_MPM_PREFORK_CONF} && \
+    chmod a+rw ${HTTPD_MPM_PREFORK_CONF}
     
 # Directory with the sources is set as the working directory so
 # can execute relative to this path.
 USER 1001
 WORKDIR ${HOME}
-
-CMD [ "run" ]

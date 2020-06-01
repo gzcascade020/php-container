@@ -1,4 +1,4 @@
-if [ ${HTTPD_MPM_PREFORK_AUTOMATICALLY_SET} -ne 0 ]; then
+if [ -s "${HTTPD_MPM_PREFORK_CONF}" ]; then
   log_info 'Processing additional httpd configuration ...'
 
   export HTTPD_START_SERVERS=${HTTPD_START_SERVERS:-8}
@@ -19,5 +19,5 @@ if [ ${HTTPD_MPM_PREFORK_AUTOMATICALLY_SET} -ne 0 ]; then
     echo "-> Cgroups memory limit is set, using HTTPD_MAX_REQUEST_WORKERS=${HTTPD_MAX_REQUEST_WORKERS}"
   fi
 
-  envsubst < /opt/app-root/etc/httpd.d/mpm_prefork.conf.template > /etc/apache2/mods-available/mpm_prefork.conf
+  envsubst < /opt/app-root/etc/httpd.d/mpm_prefork.conf.template > "${HTTPD_MPM_PREFORK_CONF}"
 fi

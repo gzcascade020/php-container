@@ -15,14 +15,8 @@ Environment variables
 ---------------------
 
 The following environment variables set their equivalent property value in the .env* file:
-* **LARAVEL_CONFIG_CACHE**
-  * Set this to a empty value to skip processing [optimizing configuration](https://laravel.com/docs/5.7/deployment#optimizing-configuration-loading)
-  * Default: 1
 * **LARAVEL_SECRETS**
   * Set this to a empty value to skip sets the .env values with the [docker secret](https://docs.docker.com/engine/swarm/secrets/#how-docker-manages-secrets) on startup.
-  * Default: 1
-* **LARAVEL_OPTIMIZE**
-  * Set this to a empty value to skip processing ```php artisan optimize```.
   * Default: 1
 * **LARAVEL_SECRET_{{LARAVEL_ENV_KEY}}**
   * Set this variable to use the docker secret file content to automatically update the *LARAVEL_ENV_KEY* in *LARAVEL_ENV_FILES* on startup.
@@ -33,3 +27,10 @@ The following environment variables set their equivalent property value in the .
 * **LARAVEL_ENV_FILES**
   * This variable can be used to specify the env files which needs to be replaced with the docker secret is contained.
   * Default: .env
+* **LARAVEL_CONFIG_CACHE**
+  * Set this to a empty value to skip processing [optimizing configuration](https://laravel.com/docs/5.7/deployment#optimizing-configuration-loading)
+  * Default: 0
+* **LARAVEL_OPTIMIZE**
+  * Set this to a empty value to skip processing ```php artisan optimize```.
+  * Default: 0  
+

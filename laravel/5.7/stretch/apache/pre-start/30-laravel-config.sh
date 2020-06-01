@@ -1,10 +1,11 @@
 log_info 'Processing laravel configuration ...'
 
-LARAVEL_CONFIG_CACHE=${LARAVEL_CONFIG_CACHE:-1}
-LARAVEL_OPTIMIZE=${LARAVEL_OPTIMIZE:-1}
 LARAVEL_SECRETS=${LARAVEL_SECRETS:-1}
 LARAVEL_ENV_EXAMPLE_FILES=${LARAVEL_ENV_EXAMPLE_FILES:-.env.example}
 LARAVEL_ENV_FILES=${LARAVEL_ENV_FILES:-.env}
+LARAVEL_OPTIMIZE=${LARAVEL_OPTIMIZE:-}
+LARAVEL_CONFIG_CACHE=${LARAVEL_CONFIG_CACHE:-}
+LARAVEL_ROUTE_CACHE=${LARAVEL_ROUTE_CACHE:-}
 
 # Copy .env*.example files to .env*
 function process_laravel_env_files {
@@ -55,21 +56,29 @@ function process_laravel_docker_secrets {
     fi
 }
 
+function artisan_optimize {
+    if [ ! -z "${LARAVEL_OPTIMIZE}" ]
+    then
+        log_and_run php artisan optimize
+    fi
+}
+
 function artisan_config_cache {
-    if [ "${LARAVEL_CONFIG_CACHE}" -ne 0 ]
+    if [ -z "${LARAVEL_OPTIMIZE}" ] && [ ! -z "${LARAVEL_CONFIG_CACHE}" ]
     then
         log_and_run php artisan config:cache
     fi    
 }
 
-function artisan_optimize {
-    if [ "${LARAVEL_CONFIG_CACHE}" -ne 0 ] && [ ! -z "${LARAVEL_OPTIMIZE}" ]
+function artisan_route_cache {
+    if [ -z "${LARAVEL_OPTIMIZE}" ] && [ ! -z "${LARAVEL_ROUTE_CACHE}" ]
     then
-        log_and_run php artisan optimize
-    fi
+        log_and_run php artisan route:cache
+    fi    
 }
     
-
 process_laravel_env_files
 process_laravel_docker_secrets
+artisan_optimize
 artisan_config_cache
+artisan_route_cache

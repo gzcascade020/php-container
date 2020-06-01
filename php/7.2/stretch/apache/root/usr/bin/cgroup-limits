@@ -56,3 +56,6 @@ function main {
 }
 
 main
+
+# Always end successfully
+exit 0

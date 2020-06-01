@@ -18,9 +18,6 @@ Environment variables
 ---------------------
 
 The following environment variables set their equivalent property value in the opcache.ini file:
-* **OPCACHE_AUTOMATICALLY_SET**
-  * Automatically sets the opcache optimal values on startup.
-  * Default: 1
 * **OPCACHE_ENABLE**
   * Determines if Zend OPCache is enabled.
   * Default: 1
@@ -56,9 +53,6 @@ settings to increase the performance for of the PHP application. In case you set
 some Cgroup limits, the image will attempt to automatically set the
 optimal values. You can override this at any time by specifying the values
 yourself:
-* **HTTPD_MPM_PREFORK_AUTOMATICALLY_SET**
-  * Automatically sets the [MPM prefork](https://httpd.apache.org/docs/2.4/mod/mpm_common.html) optimal values on startup.
-  * Default: 1
 * **HTTPD_START_SERVERS**
   * The [StartServers](https://httpd.apache.org/docs/2.4/mod/mpm_common.html#startservers)
     directive sets the number of child server processes created on startup.
