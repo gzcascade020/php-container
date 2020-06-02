@@ -56,7 +56,8 @@ ENV HOME=${APP_ROOT}/src \
     OPCACHE_INI=${PHP_INI_DIR}/conf.d/10-opcache.ini
 
 # Reset permissions of modified directories
-RUN chgrp -R 0 /var/run/apache2 /var/lock/apache2 /var/log/apache2 && \
+RUN chmod g+rwX ${APP_DATA} && \
+    chgrp -R 0 /var/run/apache2 /var/lock/apache2 /var/log/apache2 && \
     chmod -R g+rwX /var/run/apache2 /var/lock/apache2 /var/log/apache2 && \
 # Copy php production config
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
