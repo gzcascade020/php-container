@@ -57,7 +57,7 @@ RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 li
     && docker-php-ext-configure redis --enable-redis-igbinary \
     && docker-php-ext-install redis \
 # Cleanup
-    && docker-php-source delete
+    && docker-php-source delete \
     && requirementsToRemove="libpng-dev libjpeg62-turbo-dev libfreetype6-dev " \
     && apt-get purge --auto-remove -y $requirementsToRemove \
     && rm -rf /var/lib/apt/lists/*
