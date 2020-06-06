@@ -1,7 +1,7 @@
 Laravel 5.7 container image
 ================
 
-This container image includes PHP 7.2 as a base image for your Laravel 5.7 applications.
+This container image includes PHP 7.2 (gd, pdo_mysql, phpredis) as a base image for your Laravel 5.7 applications.
 
 Description
 -----------
