@@ -32,12 +32,17 @@ LABEL summary="${SUMMARY}" \
       io.openshift.tags="${NAME},${NAME}${PHP_VER_SHORT}" \
       version="${PHP_VERSION}"
 
+# Upgrade apache
+COPY ./sources.list /etc/apt/sources.list
+RUN apt-get update --fix-missing && \
+    apt-get install --only-upgrade apache2 -y
+
 # Install utils
-RUN apt-get update && \
-    apt-get -y install \
+RUN apt-get -y install \
     gettext-base && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm /etc/apt/sources.list
 
 # Install opcache
 RUN docker-php-ext-install opcache
@@ -62,7 +67,8 @@ RUN chmod g+rwX ${APP_DATA} && \
 # Copy php production config
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
     touch ${OPCACHE_INI} && \
-    chmod a+rw ${OPCACHE_INI}
+    chmod a+rw ${OPCACHE_INI} && \
+    sed -i 's/expose_php = On/expose_php = Off/g' ${PHP_INI_DIR}/php.ini
 # Update apache config
 # Update apache ports
 RUN a2enmod ssl  && \
