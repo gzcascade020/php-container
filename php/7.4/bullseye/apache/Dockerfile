@@ -41,8 +41,7 @@ RUN apt-get update --fix-missing && \
 RUN apt-get -y install \
     gettext-base && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm /etc/apt/sources.list
+    rm -rf /var/lib/apt/lists/*
 
 # Install opcache
 RUN docker-php-ext-install opcache
